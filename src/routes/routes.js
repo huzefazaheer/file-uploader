@@ -1,15 +1,9 @@
 const { Router } = require('express')
-const {
-  createUser,
-  getUserFolder,
-  getAllFolders,
-  deleteAll,
-  uploadFile,
-  getAllFiles,
-  createFolder,
-} = require('../models/db')
+const { createUser, getUserFolder, createFolder } = require('../models/db')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const multer = require('multer')
+const upload = multer({ dest: './public/data/uploads/' })
 
 const appRouter = Router()
 
@@ -70,10 +64,6 @@ appRouter.get('/logout', (req, res, next) => {
     if (err) next(err)
     res.redirect('/')
   })
-})
-
-appRouter.get('/upload', (req, res, next) => {
-  uploadFile(req.query.folder)
 })
 
 appRouter.get('/create', (req, res, next) => {

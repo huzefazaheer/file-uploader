@@ -9,6 +9,7 @@ const session = require('express-session')
 const { getUserByUsername, getUserById } = require('./models/db')
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
 const { PrismaClient } = require('../generated/prisma/client.js')
+const uploadRouter = require('./routes/uploadRoutes.js')
 const app = express()
 const PORT = process.env.PORT || 8080
 
@@ -65,6 +66,7 @@ passport.deserializeUser(async (id, done) => {
 })
 
 app.use(appRouter)
+app.use('/upload', uploadRouter)
 
 app.listen(PORT, () => {
   console.log('Server started!')
