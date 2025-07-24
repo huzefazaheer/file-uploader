@@ -8,18 +8,10 @@
   <body>
     <% if (locals.user) {%>
     <h1>WELCOME BACK <%= user.username %></h1>
-    <% Object.keys(user).forEach(key=>{ %>
-    <p><%=key%></p>
-    <p><%=user[key]%></p>
-    <% }) %> <%= folder.files%>
-    <a href="/logout">Log Out</a>
-    <form action="/upload" method="get">
-      <button type="submit">Upload File</button>
-    </form>
-    <button>Create New Folder</button>
-    <% }%>
+    <% } else {%>
     <h1>Please log in</h1>
     <a href="/login">Login</a>
     <a href="/signup">Sign Up</a>
+    <% }%>
   </body>
 </html>

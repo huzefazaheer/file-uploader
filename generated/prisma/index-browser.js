@@ -124,12 +124,14 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
   password: 'password',
+  role: 'role',
   homeFolderId: 'homeFolderId',
   filesUploaded: 'filesUploaded'
 };
 
 exports.Prisma.FolderScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  name: 'name'
 };
 
 exports.Prisma.FileScalarFieldEnum = {
@@ -154,7 +156,10 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',

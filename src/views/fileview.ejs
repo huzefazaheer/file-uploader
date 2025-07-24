@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% Object.keys(user).forEach(key => { %>
+    <p><%= key %></p>
+    <p><%= user[key] %></p>
+    <% }) %> <% if (folder.subFolders) { %> <%
+    folder.subFolders.forEach(subFolder => { %>
+    <h3><%= subFolder.name %></h3>
+    <% }); %> <% } %> <% if (folder.files) { %> <% folder.files.forEach(file =>
+    { %>
+    <h3><%= file.name %></h3>
+    <% }); %> <% } %>
+
+    <a href="/upload?folder=<%= folder.id %>">Upload File</a>
+    <a href="/create?parent=<%= folder.id %>">Create New Folder</a>
+    <br /><br />
+    <a href="/logout">Log Out</a>
+  </body>
+</html>

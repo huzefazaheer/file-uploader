@@ -4,7 +4,7 @@ const { connect } = require('../routes/routes.js')
 const prisma = new PrismaClient()
 
 async function getUserById(id) {
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
       id: id,
     },
@@ -12,18 +12,17 @@ async function getUserById(id) {
   return user
 }
 
-async function getUserByUsername(usernmae) {
+async function getUserByUsername(username) {
   const user = await prisma.user.findFirst({
     where: {
-      username: usernmae,
+      username: username,
     },
   })
   return user
 }
 
 async function createUser(username, password) {
-  const folder = await prisma.folder.create({ data: {} })
-  console.log(folder)
+  const folder = await prisma.folder.create({ data: { name: 'home' } })
   const user = await prisma.user.create({
     data: {
       username: username,
@@ -36,12 +35,12 @@ async function createUser(username, password) {
 }
 
 async function getUserFolder(id) {
-  const folder = await prisma.user.findFirst({
-    where: {
-      id: id,
-    },
+  const folder = await prisma.folder.findUnique({
+    where: { id: id },
     select: {
-      homeFolder: true,
+      id: true,
+      files: true,
+      subFolders: true,
     },
   })
   return folder
@@ -57,9 +56,28 @@ async function uploadFile(folder) {
   })
 }
 
+async function createFolder(folder) {
+  await prisma.folder.create({
+    data: {
+      name: 'My Folder',
+      parentFolder: {
+        connect: {
+          id: folder,
+        },
+      },
+    },
+  })
+}
+
 async function deleteAll() {
   await prisma.folder.deleteMany()
   await prisma.user.deleteMany()
+  await prisma.file.deleteMany()
+}
+
+async function getAllFiles() {
+  const folders = await prisma.file.findMany({})
+  console.log(folders)
 }
 
 module.exports = {
@@ -68,4 +86,7 @@ module.exports = {
   deleteAll,
   getUserById,
   getUserFolder,
+  getAllFiles,
+  uploadFile,
+  createFolder,
 }

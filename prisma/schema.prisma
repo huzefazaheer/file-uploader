@@ -26,6 +26,7 @@ model User {
 
 model Folder {
   id           String   @id @unique @default(uuid())
+  name         String
   homeFolderOf User?    @relation("homeFolder")
   files        File[]   @relation("inFolder")
   parentFolder Folder[] @relation("subFolder")
