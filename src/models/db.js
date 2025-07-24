@@ -85,7 +85,7 @@ async function getAllFiles() {
 async function getFile(id) {
   const file = await prisma.file.findUnique({
     where: { id: id },
-    select: { id: true, dateUploaded: true, name: true },
+    select: { id: true, dateUploaded: true, name: true, fileSize: true },
   })
   return file
 }

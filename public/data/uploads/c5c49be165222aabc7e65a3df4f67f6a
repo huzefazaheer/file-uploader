@@ -1,0 +1,7 @@
+roslaunch iq_sim runway.launch
+
+cd ~/ardupilot/ArduCopter/ && sim_vehicle.py -v ArduCopter -f gazebo-iris --console
+
+roslaunch iq_sim apm.launch
+
+roslaunch rosbridge_server rosbridge_websocket.launch

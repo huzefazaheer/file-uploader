@@ -3,18 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>File Uploader</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <h1>File</h1>
-    <h2>Name</h2>
-    <h3><%= file.name %></h3>
-    <h2>Upload Date</h2>
-    <h3><%= file.fileSize %></h3>
-    <h2>Upload Date</h2>
-    <h3><%= file.dateUploaded %></h3>
-    <a href="/file/delete/<%= file.id %>">Delete</a>
-    <br /><br />
-    <a href="/logout">Log Out</a>
+    <%- include('navbar') %>
+
+    <div class="center">
+      <h1 class="tableheading">File Details</h1>
+      <table>
+        <tr>
+          <th>Name</th>
+          <td><%= file.name %></td>
+        </tr>
+        <tr>
+          <th>File Size</th>
+
+          <td><%= file.fileSize %> kb</td>
+        </tr>
+        <tr>
+          <th>Upload Date</th>
+          <td><%= new Date(file.dateUploaded).toLocaleString('en-US') %></td>
+        </tr>
+      </table>
+      <div class="btns">
+        <a class="button" id="delete" href="/file/delete/<%= file.id %>"
+          >Delete</a
+        >
+        <a class="button" href="/file/delete/<%= file.id %>">Download</a>
+      </div>
+    </div>
   </body>
 </html>

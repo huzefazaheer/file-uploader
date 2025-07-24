@@ -71,7 +71,7 @@ appRouter.get('/logout', (req, res, next) => {
 })
 
 appRouter.get('/create', (req, res, next) => {
-  res.render('newfolder', { folder: req.query.folder })
+  res.render('newfolder', { folder: req.query.folder, user: req.user })
 })
 
 appRouter.post('/create', async (req, res) => {
@@ -83,7 +83,7 @@ appRouter.post('/create', async (req, res) => {
 
 appRouter.get('/file/:id', async (req, res) => {
   const file = await getFile(req.params.id)
-  res.render('fileview', { file: file })
+  res.render('fileview', { file: file, user: req.user })
 })
 
 appRouter.get('/file/delete/:id', async (req, res) => {

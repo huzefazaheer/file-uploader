@@ -5,7 +5,7 @@ const upload = multer({ dest: './public/data/uploads/' })
 const uploadRouter = Router()
 
 uploadRouter.get('/', (req, res, next) => {
-  res.render('uploadfile', { folderid: req.query.folder })
+  res.render('uploadfile', { folderid: req.query.folder, user: req.user })
 })
 
 uploadRouter.post('/', upload.single('uploadedfile'), function (req, res) {
