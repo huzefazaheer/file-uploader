@@ -98,4 +98,9 @@ appRouter.get('/folder/delete/:id', async (req, res) => {
   res.redirect('/')
 })
 
+appRouter.get('/file/download/:id', async (req, res) => {
+  const file = await getFile(req.params.id)
+  res.download(file.url)
+})
+
 module.exports = appRouter
