@@ -1,16 +1,29 @@
 const { Router } = require('express')
-const { createUser } = require('../models/db')
+const { createUser, getUserFolder } = require('../models/db')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 
 const appRouter = Router()
 
-appRouter.get('/', (req, res) => {
-  res.render('index', { user: req.user })
+appRouter.get('/', async (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/folder/' + req.user.id)
+  } else {
+    res.render('index', { user: req.user, folder: '' })
+  }
+})
+
+appRouter.get('/folder/:id', async (req, res) => {
+  const homeFolder = await getUserFolder(req.params.id)
+  res.render('index', { user: req.user, folder: homeFolder })
 })
 
 appRouter.get('/signup', (req, res) => {
-  res.render('signup')
+  if (req.isAuthenticated()) {
+    res.render('signup')
+  } else {
+    res.redirect('/')
+  }
 })
 
 appRouter.post('/signup', async (req, res, next) => {
@@ -27,7 +40,11 @@ appRouter.post('/signup', async (req, res, next) => {
 })
 
 appRouter.get('/login', (req, res) => {
-  res.render('login')
+  if (req.isAuthenticated) {
+    res.render('login')
+  } else {
+    res.redirect('/')
+  }
 })
 
 appRouter.post(

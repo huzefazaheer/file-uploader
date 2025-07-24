@@ -18,6 +18,7 @@ model User {
   id            String  @id @unique @default(uuid())
   username      String
   password      String
+  role          Role    @default(USER)
   homeFolder    Folder? @relation("homeFolder", fields: [homeFolderId], references: [id])
   homeFolderId  String? @unique
   filesUploaded Int     @default(0)
