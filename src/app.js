@@ -7,6 +7,8 @@ const bcrypt = require('bcryptjs')
 const appRouter = require('./routes/routes')
 const session = require('express-session')
 const { getUserByUsername, getUserById } = require('./models/db')
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
+const { PrismaClient } = require('../generated/prisma/client.js')
 const app = express()
 const PORT = process.env.PORT || 8080
 
@@ -18,7 +20,21 @@ app.set('views', viewsPath)
 
 app.use(express.static(publicPath))
 app.use(express.urlencoded({ extended: true }))
-app.use(session({ secret: 'cat', resave: false, saveUninitialized: false }))
+app.use(
+  session({
+    secret: 'cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+    },
+    store: new PrismaSessionStore(new PrismaClient(), {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
+  }),
+)
 app.use(passport.session())
 
 passport.use(

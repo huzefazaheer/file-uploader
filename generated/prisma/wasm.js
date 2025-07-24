@@ -142,6 +142,13 @@ exports.Prisma.FileScalarFieldEnum = {
   inFolderId: 'inFolderId'
 };
 
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sid: 'sid',
+  data: 'data',
+  expiresAt: 'expiresAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -164,7 +171,8 @@ exports.Role = exports.$Enums.Role = {
 exports.Prisma.ModelName = {
   User: 'User',
   Folder: 'Folder',
-  File: 'File'
+  File: 'File',
+  Session: 'Session'
 };
 
 /**
