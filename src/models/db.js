@@ -103,6 +103,20 @@ async function deleteFile(id) {
 }
 
 async function deleteFolder(id) {
+  const selectedFolder = await prisma.folder.findUniqueOrThrow({
+    where: { id: id },
+    select: { subFolders: true, files: true },
+  })
+  if (selectedFolder.files) {
+    selectedFolder.files.forEach(async (file) => {
+      await deleteFile(file.id)
+    })
+  }
+  if (selectedFolder.subFolders) {
+    selectedFolder.subFolders.forEach(async (folder) => {
+      await deleteFolder(folder.id)
+    })
+  }
   await prisma.folder.delete({
     where: { id: id },
   })

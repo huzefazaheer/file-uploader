@@ -13,7 +13,7 @@ uploadRouter.post('/', upload.single('uploadedfile'), function (req, res) {
     (req.user.filesUploaded < 5 && req.user.role === 'USER') ||
     req.user.role !== 'USER'
   ) {
-    if (req.file.size < 100000) {
+    if (req.file.size < 100000000) {
       uploadFile(
         req.query.folder,
         req.file.originalname,
