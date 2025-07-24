@@ -41,25 +41,27 @@ async function getUserFolder(id) {
       id: true,
       files: true,
       subFolders: true,
+      parentFolder: true,
     },
   })
   return folder
 }
 
-async function uploadFile(folder) {
+async function uploadFile(folder, name, url, size) {
   await prisma.file.create({
     data: {
-      name: 'My File',
-      url: 'www.google.com',
+      name: name,
+      url: url,
       inFolderId: folder,
+      fileSize: size,
     },
   })
 }
 
-async function createFolder(folder) {
+async function createFolder(folder, name) {
   await prisma.folder.create({
     data: {
-      name: 'My Folder',
+      name: name,
       parentFolder: {
         connect: {
           id: folder,
@@ -80,6 +82,26 @@ async function getAllFiles() {
   console.log(folders)
 }
 
+async function getFile(id) {
+  const file = await prisma.file.findUnique({
+    where: { id: id },
+    select: { id: true, dateUploaded: true, name: true },
+  })
+  return file
+}
+
+async function deleteFile(id) {
+  await prisma.file.delete({
+    where: { id: id },
+  })
+}
+
+async function deleteFolder(id) {
+  await prisma.folder.delete({
+    where: { id: id },
+  })
+}
+
 module.exports = {
   createUser,
   getUserByUsername,
@@ -89,4 +111,7 @@ module.exports = {
   getAllFiles,
   uploadFile,
   createFolder,
+  getFile,
+  deleteFile,
+  deleteFolder,
 }

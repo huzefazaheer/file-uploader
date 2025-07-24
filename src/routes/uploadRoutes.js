@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const multer = require('multer')
+const { uploadFile } = require('../models/db')
 const upload = multer({ dest: './public/data/uploads/' })
 const uploadRouter = Router()
 
@@ -8,9 +9,20 @@ uploadRouter.get('/', (req, res, next) => {
 })
 
 uploadRouter.post('/', upload.single('uploadedfile'), function (req, res) {
-  // req.file is the name of your file in the form above, here 'uploaded_file'
-  // req.body will hold the text fields, if there were any
-  console.log(req.file, req.body)
+  if (
+    (req.user.filesUploaded < 5 && req.user.role === 'USER') ||
+    req.user.role !== 'USER'
+  ) {
+    if (req.file.size < 100000) {
+      uploadFile(
+        req.query.folder,
+        req.file.originalname,
+        req.file.path,
+        req.file.size,
+      )
+      res.redirect('/')
+    }
+  }
 })
 
 module.exports = uploadRouter

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1><%= user.username %></h1>
+    <p>
+      Files Uploaded: <%= user.filesUploaded %> / <% if (user.role === "USER") {
+      %> 5 <% } else{%>Unlimited<% }%>
+    </p>
+    <h3>Go Back</h3>
+    <% if (folder.parentFolder) { %>
+    <a href="/folder/<%= folder.parentFolder.id %>"
+      ><%= folder.parentFolder.name %></a
+    >
+    <% } %>
+    <h3>Folders</h3>
+    <% if (folder.subFolders) { %> <% folder.subFolders.forEach(subFolder => {
+    %>
+    <a href="/folder/<%= subFolder.id %>"><%= subFolder.name %></a>
+    <% }); %> <% } %>
+    <h3>Files</h3>
+    <% if (folder.files) { %> <% folder.files.forEach(file => { %>
+    <a href="/file/<%= file.id %>"><%= file.name %></a>
+    <p><%= file.url %></p>
+    <% }); %> <% } %>
+
+    <a href="/upload?folder=<%= folder.id %>">Upload File</a>
+    <a href="/create?folder=<%= folder.id %>">Create New Folder</a>
+    <%if (folder.id !== user.homeFolderId){%>
+    <a href="/folder/delete/<%= folder.id %>">Delete Folder</a>
+    <%}%>
+    <br /><br />
+    <a href="/logout">Log Out</a>
+  </body>
+</html>

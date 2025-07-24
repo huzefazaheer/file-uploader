@@ -1,10 +1,14 @@
 const { Router } = require('express')
-const { createUser, getUserFolder, createFolder } = require('../models/db')
+const {
+  createUser,
+  getUserFolder,
+  createFolder,
+  getFile,
+  deleteFile,
+  deleteFolder,
+} = require('../models/db')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
-const multer = require('multer')
-const upload = multer({ dest: './public/data/uploads/' })
-
 const appRouter = Router()
 
 appRouter.get('/', async (req, res) => {
@@ -18,7 +22,7 @@ appRouter.get('/', async (req, res) => {
 appRouter.get('/folder/:id', async (req, res) => {
   const currFolder = await getUserFolder(req.params.id)
   console.log(currFolder)
-  res.render('fileview', { user: req.user, folder: currFolder })
+  res.render('folderview', { user: req.user, folder: currFolder })
 })
 
 appRouter.get('/signup', (req, res) => {
@@ -67,7 +71,31 @@ appRouter.get('/logout', (req, res, next) => {
 })
 
 appRouter.get('/create', (req, res, next) => {
-  createFolder(req.query.parent)
+  res.render('newfolder', { folder: req.query.folder })
+})
+
+appRouter.post('/create', async (req, res) => {
+  console.log('Q')
+  await createFolder(req.query.folder, req.body.foldername)
+  const redirecturl = '/folder/' + req.query.folder
+  res.redirect(redirecturl)
+})
+
+appRouter.get('/file/:id', async (req, res) => {
+  const file = await getFile(req.params.id)
+  res.render('fileview', { file: file })
+})
+
+appRouter.get('/file/delete/:id', async (req, res) => {
+  await deleteFile(req.params.id)
+  res.redirect('/')
+})
+
+appRouter.get('/folder/delete/:id', async (req, res) => {
+  if (req.user.homeFolderId !== req.params.id) {
+    await deleteFolder(req.params.id)
+  }
+  res.redirect('/')
 })
 
 module.exports = appRouter

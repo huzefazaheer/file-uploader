@@ -6,19 +6,14 @@
     <title>Document</title>
   </head>
   <body>
-    <% Object.keys(user).forEach(key => { %>
-    <p><%= key %></p>
-    <p><%= user[key] %></p>
-    <% }) %> <% if (folder.subFolders) { %> <%
-    folder.subFolders.forEach(subFolder => { %>
-    <h3><%= subFolder.name %></h3>
-    <% }); %> <% } %> <% if (folder.files) { %> <% folder.files.forEach(file =>
-    { %>
+    <h1>File</h1>
+    <h2>Name</h2>
     <h3><%= file.name %></h3>
-    <% }); %> <% } %>
-
-    <a href="/upload?folder=<%= folder.id %>">Upload File</a>
-    <a href="/create?parent=<%= folder.id %>">Create New Folder</a>
+    <h2>Upload Date</h2>
+    <h3><%= file.fileSize %></h3>
+    <h2>Upload Date</h2>
+    <h3><%= file.dateUploaded %></h3>
+    <a href="/file/delete/<%= file.id %>">Delete</a>
     <br /><br />
     <a href="/logout">Log Out</a>
   </body>

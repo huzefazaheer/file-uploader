@@ -25,18 +25,20 @@ model User {
 }
 
 model Folder {
-  id           String   @id @unique @default(uuid())
-  name         String
-  homeFolderOf User?    @relation("homeFolder")
-  files        File[]   @relation("inFolder")
-  parentFolder Folder[] @relation("subFolder")
-  subFolders   Folder[] @relation("subFolder")
+  id             String   @id @unique @default(uuid())
+  name           String
+  homeFolderOf   User?    @relation("homeFolder")
+  files          File[]   @relation("inFolder")
+  parentFolder   Folder?  @relation("subFolder", fields: [parentFolderId], references: [id])
+  parentFolderId String?
+  subFolders     Folder[] @relation("subFolder")
 }
 
 model File {
   id           String   @id @unique @default(uuid())
   name         String
   url          String
+  fileSize     Int
   dateUploaded DateTime @default(now())
   inFolder     Folder   @relation("inFolder", fields: [inFolderId], references: [id])
   inFolderId   String
