@@ -9,16 +9,20 @@
   <body>
     <%- include('navbar') %>
     <form action="/signup" method="post">
-    <h1>Sign Up</h1>
+      <h1>Sign Up</h1>
       <label for="username">Username</label>
-      <input type="text" name="username" id="username" />
+      <input type="text" name="username" id="username" required />
       <label for="password">Password</label>
-      <input type="password" name="password" id="password" />
+      <input type="password" name="password" id="password" required />
       <label for="passwordconfirm">Confirm password</label>
-      <input type="password" name="passwordconfirm" id="passwordconfirm" />
+      <input
+        type="password"
+        name="passwordconfirm"
+        id="passwordconfirm"
+        required
+      />
       <button class="button" type="submit">SignUp</button>
-       <p>Already have an account? <a class="authurl" href="/login">Login</a></p>
+      <p>Already have an account? <a class="authurl" href="/login">Login</a></p>
     </form>
-   
   </body>
 </html>

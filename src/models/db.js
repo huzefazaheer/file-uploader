@@ -1,6 +1,9 @@
 const { PrismaClient } = require('../../generated/prisma/client.js')
 const { connect } = require('../routes/routes.js')
 const fs = require('fs')
+const { createClient } = require('@supabase/supabase-js')
+require('dotenv').config()
+const supabase = createClient(process.env.SUPABASE, process.env.STORAGE_KEY)
 
 const prisma = new PrismaClient()
 
@@ -8,6 +11,20 @@ async function getUserById(id) {
   const user = await prisma.user.findUnique({
     where: {
       id: id,
+    },
+  })
+  return user
+}
+
+async function incrementUpload(id) {
+  const user = await prisma.user.update({
+    where: {
+      id: id,
+    },
+    data: {
+      filesUploaded: {
+        increment: 1,
+      },
     },
   })
   return user
@@ -99,9 +116,7 @@ async function getFile(id) {
 
 async function deleteFile(id) {
   const file = await getFile(id)
-  await fs.unlink(file.url, (err) => {
-    console.log(err)
-  })
+  const { data, error } = await supabase.storage.from('data').remove([file.url])
   await prisma.file.delete({
     where: { id: id },
   })
@@ -112,15 +127,15 @@ async function deleteFolder(id) {
     where: { id: id },
     select: { subFolders: true, files: true },
   })
-  if (selectedFolder.files) {
-    selectedFolder.files.forEach(async (file) => {
+  if (selectedFolder.files.length > 0) {
+    for (const file of selectedFolder.files) {
       await deleteFile(file.id)
-    })
+    }
   }
-  if (selectedFolder.subFolders) {
-    selectedFolder.subFolders.forEach(async (folder) => {
-      await deleteFolder(folder.id)
-    })
+  if (selectedFolder.subFolders.length > 0) {
+    for (const subfolder of selectedFolder.subFolders) {
+      await deleteFolder(subfolder.id)
+    }
   }
   await prisma.folder.delete({
     where: { id: id },
@@ -139,4 +154,6 @@ module.exports = {
   getFile,
   deleteFile,
   deleteFolder,
+  incrementUpload,
+  supabase,
 }

@@ -10,6 +10,9 @@ const { getUserByUsername, getUserById } = require('./models/db')
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
 const { PrismaClient } = require('../generated/prisma/client.js')
 const uploadRouter = require('./routes/uploadRoutes.js')
+const createRouter = require('./routes/createRoutes.js')
+const fileRouter = require('./routes/fileRoutes.js')
+const folderRouter = require('./routes/folderRouter.js')
 const app = express()
 const PORT = process.env.PORT || 8080
 
@@ -66,7 +69,18 @@ passport.deserializeUser(async (id, done) => {
 })
 
 app.use(appRouter)
+app.use('/create', createRouter)
 app.use('/upload', uploadRouter)
+app.use('/file', fileRouter)
+app.use('/folder', folderRouter)
+
+app.use((req, res) => {
+  res.render('error')
+})
+
+app.use((error, req, res, next) => {
+  res.render('error')
+})
 
 app.listen(PORT, () => {
   console.log('Server started!')
