@@ -1,4 +1,14 @@
 {
+  "name": "file-uploader",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "postdeploy": "npx prisma migrate deploy",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev"
+  },
   "dependencies": {
     "@prisma/client": "^6.12.0",
     "@quixo3/prisma-session-store": "^3.1.13",
@@ -11,9 +21,9 @@
     "multer": "^2.0.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "prisma": "^6.12.0",
-    "scripts": {
-      "postdeploy": "npx prisma migrate deploy"
-    }
+    "prisma": "^6.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
