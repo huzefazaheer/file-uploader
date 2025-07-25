@@ -1,5 +1,6 @@
 const { PrismaClient } = require('../../generated/prisma/client.js')
 const { connect } = require('../routes/routes.js')
+const fs = require('fs')
 
 const prisma = new PrismaClient()
 
@@ -97,6 +98,10 @@ async function getFile(id) {
 }
 
 async function deleteFile(id) {
+  const file = await getFile(id)
+  await fs.unlink(file.url, (err) => {
+    console.log(err)
+  })
   await prisma.file.delete({
     where: { id: id },
   })
